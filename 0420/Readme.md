@@ -86,8 +86,15 @@
 ## git 흐름도
 <img width="684" height="311" alt="image" src="https://github.com/user-attachments/assets/fd71b69d-6f3a-416b-b034-c963279a2f88" />
 
+## git 의 공간
+
 1. **Working Dircetory** : **WorkingSpace**라고도 하며, 프로젝트를 하는데 있어 작업을 하는 디렉토리를 의미한다. <br>실제 프로젝트 코딩하는 장소.<br>
 2. **Staging Area(Index)** : 변경 사항을 임시로 저장하는 영역, <br>곧 **commit**할 파일에 대한 정보를 저장하고 있는 파일이다.<br>
 3. **.git directory(Repository)** : 프로젝트 모든 버전에 대한 메타 데이터와 <br>객체 데이터베이스를 저장하는 장소, **git의 핵심**<br>
 4. **Remote** : 원격창고, 코드를 호스팅하는 서버로 프로젝트 그룹 중 <br>원격 데이터 교환을 위해 존재하는 하나의 로컬이다.**클라우드**<br>
 
+## git 의 상태
+
+1. Modified : 데이터가 로컬 데이더 베이스에 안전하게 저장된 파일
+2. Staged : 현재 수정한 파일을 곧 커밋할 것 이라고 표시한 상태의 파일
+3. Committed : 데이터가 로컬 데이터 베이스에 안전하게 저장된 파일
