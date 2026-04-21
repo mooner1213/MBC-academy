@@ -180,4 +180,19 @@ public class Player : MonoBehaviour
 플레이 화면 아래쪽에 빨간글씨로 뭔가 떠있는거임!!
 <img width="1373" height="40" alt="image" src="https://github.com/user-attachments/assets/ff0a460c-ae61-474f-b333-53f9b5f8473d" />
 
-잘은 안보이겠지
+잘은 안보이겠지만, 뭔가가 잘못되었다는건 알겠음..
+
+그래서 물어보니까,
+<img width="715" height="464" alt="image" src="https://github.com/user-attachments/assets/d7d2d9ac-e4ef-4b09-89f4-45e8a7edcdd7" />
+라고한다. 1번을 따라서 해보니 바로 해결되었으나,,,
+
+또 다른 **문제**가 생겼다.
+
+아니 플레이어가 우측을 바라보고 있는데, 위 방향키를 누르니 우측으로 돌진하는 것이 아닌가!!!!!!!!!!!!!!!!!
+
+그래서 이것도 물어봐서 해결했다.
+<img width="724" height="484" alt="image" src="https://github.com/user-attachments/assets/cac45da6-b029-469d-9aca-82b5059ee3ea" />
+
+역시 ai야 금방 해결해주는구나?
+
+이제는 총알 부분을 한번 만들어 보겠다.
