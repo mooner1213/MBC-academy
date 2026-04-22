@@ -703,3 +703,157 @@ protected virtual void OnDeath()
 
 <img width="720" height="248" alt="image" src="https://github.com/user-attachments/assets/a7fd78eb-d2e9-42a5-b441-b5769b9b7906" />
 
+<img width="722" height="284" alt="image" src="https://github.com/user-attachments/assets/8415fb76-739d-47ed-b173-f1934e555b2d" />
+
+그리고, Hp 바의 위치나 UI의 위치를 어떻게 설정 하는지에 대해서도 알게되었다.
+
+이러니까 또 괜찮아진거같네ㅋㅋ
+
+<img width="1100" height="504" alt="image" src="https://github.com/user-attachments/assets/aee1d29c-72e9-4668-86bf-d801e47f4db8" />
+
+아직 허접하지만, 게임 화면이다. 어느정도 있을건 다 있는느낌이랄까(아님)
+
+이젠 내부의 적들과 탄막 데미지 등등을 구현했으니까, 스테이지라는 것을 만들어 보기로 한다.
+
+일단 스테이지의 데이터 구조를 짜야한다.
+
+**StageData.cs(스테이지 데이터 구조)**
+```
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "StageData", menuName = "Game/StageData")]
+public class StageData : ScriptableObject
+{
+    [Header("스테이지 정보")]
+    public string stageName;
+    public float stageDuration; // 보스 등장까지 걸리는 시간 (초)
+
+    [Header("적 등장 목록")]
+    public EnemySpawnEvent[] spawnEvents;
+
+    [Header("보스")]
+    public GameObject bossPrefab;
+}
+
+[System.Serializable]
+public class EnemySpawnEvent
+{
+    public GameObject enemyPrefab;   // 어떤 적?
+    public float spawnTime;          // 몇 초에 등장?
+    public Vector2 spawnPosition;    // 어디서 등장?
+    public bool isStationary;        // true = 자리잡고 탄막 / false = 지나가는 적
+}
+```
+
+**StageManager.cs**
+```
+using UnityEngine;
+using System.Collections;
+
+public class StageManager : MonoBehaviour
+{
+    public static StageManager Instance;
+
+    [Header("스테이지 데이터")]
+    public StageData currentStage;
+
+    private float stageTimer = 0f;
+    private bool stageStarted = false;
+    private bool bossSpawned = false;
+
+    void Awake()
+    {
+        Instance = this;
+    }
+
+    void Start()
+    {
+        StartStage();
+    }
+
+    public void StartStage()
+    {
+        stageTimer = 0f;
+        stageStarted = true;
+        bossSpawned = false;
+
+        // 모든 적 등장 이벤트 코루틴 시작
+        foreach (var spawnEvent in currentStage.spawnEvents)
+        {
+            StartCoroutine(SpawnEnemyAtTime(spawnEvent));
+        }
+    }
+
+    void Update()
+    {
+        if (!stageStarted) return;
+
+        stageTimer += Time.deltaTime;
+
+        // 시간 다 되면 보스 등장
+        if (!bossSpawned && stageTimer >= currentStage.stageDuration)
+        {
+            bossSpawned = true;
+            StartCoroutine(SpawnBoss());
+        }
+    }
+
+    IEnumerator SpawnEnemyAtTime(EnemySpawnEvent spawnEvent)
+    {
+        yield return new WaitForSeconds(spawnEvent.spawnTime);
+
+        if (spawnEvent.enemyPrefab == null) yield break;
+
+        GameObject enemy = Instantiate(
+            spawnEvent.enemyPrefab,
+            spawnEvent.spawnPosition,
+            Quaternion.identity
+        );
+
+        // 자리잡는 적이면 이동 멈추게
+        EnemyBase eb = enemy.GetComponent<EnemyBase>();
+        if (eb != null) eb.isStationary = spawnEvent.isStationary;
+    }
+
+    IEnumerator SpawnBoss()
+    {
+        // 잠깐 텀 주고 보스 등장
+        yield return new WaitForSeconds(2f);
+
+        if (currentStage.bossPrefab != null)
+        {
+            Instantiate(currentStage.bossPrefab, new Vector3(6f, 0f, 0f), Quaternion.identity);
+            Debug.Log("보스 등장!");
+        }
+    }
+
+    public void StageClear()
+    {
+        stageStarted = false;
+        Debug.Log("스테이지 클리어!");
+        // 나중에 씬 전환 연결
+    }
+}
+```
+
+**StageBase.cs 수정**
+<img width="716" height="186" alt="image" src="https://github.com/user-attachments/assets/bd7c3751-6348-4658-a357-ce92a65738ef" />
+```
+protected override IEnumerator MoveRoutine()
+{
+    if (isStationary) yield break; // 고정 적이면 이동 안 함
+
+    // 기존 이동 코드
+    while (true)
+    {
+        transform.Translate(Vector2.left * moveSpeed * Time.deltaTime, Space.World);
+        if (transform.position.x < -Camera.main.orthographicSize * Camera.main.aspect - 2f)
+            Destroy(gameObject);
+        yield return null;
+    }
+}
+```
+
+그 후, 유니티 세팅을 한다.
+<img width="715" height="550" alt="image" src="https://github.com/user-attachments/assets/3d878420-eaec-4d0c-9f4e-2b8023959883" />
+
