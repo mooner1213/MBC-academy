@@ -857,3 +857,4 @@ protected override IEnumerator MoveRoutine()
 그 후, 유니티 세팅을 한다.
 <img width="715" height="550" alt="image" src="https://github.com/user-attachments/assets/3d878420-eaec-4d0c-9f4e-2b8023959883" />
 
+더했는데 여기 채워넣어라 생각해 복습해
