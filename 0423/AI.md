@@ -95,3 +95,19 @@ Gem으로 하는게 더 나을 것 같긴한데, 노트북으로 만들어 보�
 <img width="483" height="196" alt="image" src="https://github.com/user-attachments/assets/e2f4a289-dc7a-4651-9228-1898669ad0ed" />
 
 AI : XX자식
+
+**$%$#&#%&$%$#@%@사고발생$#%@$#$#@%$%$#%$@**
+
+이 게임 만들던거를 제안서와 함께 게임답게 만들어야한다.
+
+그래서 귀여운 비버가 우주쓰레기를 청소하러 가는 스토리를 급하게 만들고
+
+디자인과 테마를 확 바꿨다.
+
+그러니까 AI가 렉걸리기 시작함ㅋㅋㅋ;;;
+
+글이 잘 안써짐 명령어 부분...
+
+아무튼 개빡세게 하는중
+
+<img width="1378" height="758" alt="image" src="https://github.com/user-attachments/assets/da8439a9-27a5-443e-99ce-1b24fcb296b4" />
