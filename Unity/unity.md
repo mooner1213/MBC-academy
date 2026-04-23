@@ -713,6 +713,8 @@ protected virtual void OnDeath()
 
 아직 허접하지만, 게임 화면이다. 어느정도 있을건 다 있는느낌이랄까(아님)
 
+### 스테이지 데이터 구조
+
 이젠 내부의 적들과 탄막 데미지 등등을 구현했으니까, 스테이지라는 것을 만들어 보기로 한다.
 
 일단 스테이지의 데이터 구조를 짜야한다.
@@ -857,4 +859,196 @@ protected override IEnumerator MoveRoutine()
 그 후, 유니티 세팅을 한다.
 <img width="715" height="550" alt="image" src="https://github.com/user-attachments/assets/3d878420-eaec-4d0c-9f4e-2b8023959883" />
 
-더했는데 여기 채워넣어라 생각해 복습해
+휴, 이제야 어느정도 숨이 트인다...
+
+자잘한 오류가 있긴한데, 말해주면 다 고쳐주더라. 이게 바이브 코딩이지ㅋ
+
+이제 뭐 또 여러가지 말하는데, 나는 적군을 더 다양하게 추가하고 싶었다.
+
+그래서 여러가지 탄막의 종류를 만들어 달라했다.
+
+하나의 적은 플레이어를 조준해서 발사하고, 다른 적은 나선형 패턴, 다른적은 위아래로 퍼지는패턴을 주더라.
+
+아 그리고, 저번에 스폰매니저를 이용해서 적군이 랜덤으로 등장하게 했는데,
+
+이 기능이 이제 필요없어져서, 물어봤더니, 지워도 상관없다더라. 그래서 없앴씀!
+
+없앤 후에 진행하는데, 아니... 적군이 천천히 나타나는게 아니라, 갑자기 뿅하고 지정한 위치에 생기는게 아닌가.
+
+하... 이건 아니야.
+
+<img width="587" height="48" alt="image" src="https://github.com/user-attachments/assets/a0bafcae-956d-4316-8c55-3f9b75b27ba2" />
+
+바로 겐세이 넣기
+
+<img width="734" height="188" alt="image" src="https://github.com/user-attachments/assets/6002ad22-26af-4c0b-aecc-8c2736671e6b" />
+<img width="603" height="614" alt="image" src="https://github.com/user-attachments/assets/450958f4-6e9c-4cbf-9d11-f86ec998a6f8" />
+
+스폰매니저 수정까지
+<img width="686" height="524" alt="image" src="https://github.com/user-attachments/assets/a60dcce2-63f1-406b-bcc4-f9dbde8679a7" />
+
+그리고 enemyB까지 나혼자의 힘으로!!!!!!!!!!!!!!!!!!!!!!!!! 만들었다.
+
+물론 cs코드는 들고왔지만..^^ 나머지 설정들ㅎ
+
+이러고 국취제 이슈로 멘탈갈려서 도망쳤다. 그래도 나름 많이 했자나 한잔해
+
+0422 끗
+
+## 0423 시작
+
+사실 어제 정리도 안하고 도망쳐서 오전 수업 시작한지 좀 됬는데 이제 적기 시작한다. 에효;
+
+저번에 하다 만 적군들의 다양한 패턴들이다.
+
+### 패턴
+
+**EnemyA.cs (플레이어 조준 발사)**
+```
+using UnityEngine;
+using System.Collections;
+
+public class EnemyA : EnemyBase
+{
+    [Header("EnemyA 이동")]
+    public float moveSpeed = 2f;
+
+    protected override IEnumerator MoveRoutine()
+    {
+        if (isStationary) yield break;
+
+        while (true)
+        {
+            transform.Translate(Vector2.left * moveSpeed * Time.deltaTime, Space.World);
+
+            if (transform.position.x < -Camera.main.orthographicSize * Camera.main.aspect - 2f)
+                Destroy(gameObject);
+
+            yield return null;
+        }
+    }
+
+    protected override IEnumerator ShootRoutine()
+    {
+        yield return new WaitForSeconds(1f);
+
+        while (true)
+        {
+            // 플레이어 방향 계산
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                Vector2 dir = (player.transform.position - transform.position).normalized;
+                FireBullet(dir);
+            }
+
+            yield return new WaitForSeconds(1.5f);
+        }
+    }
+}
+```
+**EnemyB.cs (나선형 회전 발사)**
+```
+using UnityEngine;
+using System.Collections;
+
+public class EnemyB : EnemyBase
+{
+    [Header("EnemyB 이동")]
+    public float moveSpeed = 1.5f;
+
+    [Header("나선형 설정")]
+    public float rotateSpeed = 60f;  // 회전 속도 (도/초)
+    public int bulletCount = 3;      // 동시에 발사할 탄 수
+
+    private float currentAngle = 0f;
+
+    protected override IEnumerator MoveRoutine()
+    {
+        if (isStationary) yield break;
+
+        while (true)
+        {
+            transform.Translate(Vector2.left * moveSpeed * Time.deltaTime, Space.World);
+
+            if (transform.position.x < -Camera.main.orthographicSize * Camera.main.aspect - 2f)
+                Destroy(gameObject);
+
+            yield return null;
+        }
+    }
+
+    protected override IEnumerator ShootRoutine()
+    {
+        yield return new WaitForSeconds(1f);
+
+        while (true)
+        {
+            // 여러 방향으로 나선형 발사
+            for (int i = 0; i < bulletCount; i++)
+            {
+                float angle = currentAngle + (360f / bulletCount) * i;
+                Vector2 dir = new Vector2(
+                    Mathf.Cos(angle * Mathf.Deg2Rad),
+                    Mathf.Sin(angle * Mathf.Deg2Rad)
+                );
+                FireBullet(dir);
+            }
+
+            currentAngle += rotateSpeed * 0.1f;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+}
+```
+**EnemyC.cs (위아래로 퍼지는 패턴)**
+```
+using UnityEngine;
+using System.Collections;
+
+public class EnemyC : EnemyBase
+{
+    [Header("EnemyC 이동")]
+    public float moveSpeed = 2f;
+
+    [Header("위아래 패턴 설정")]
+    public int bulletCount = 5;      // 발사할 탄 수
+    public float spreadAngle = 90f;  // 퍼지는 각도 범위
+
+    protected override IEnumerator MoveRoutine()
+    {
+        if (isStationary) yield break;
+
+        while (true)
+        {
+            transform.Translate(Vector2.left * moveSpeed * Time.deltaTime, Space.World);
+
+            if (transform.position.x < -Camera.main.orthographicSize * Camera.main.aspect - 2f)
+                Destroy(gameObject);
+
+            yield return null;
+        }
+    }
+
+    protected override IEnumerator ShootRoutine()
+    {
+        yield return new WaitForSeconds(1f);
+
+        while (true)
+        {
+            // 위아래로 퍼지게 발사
+            for (int i = 0; i < bulletCount; i++)
+            {
+                float angle = -spreadAngle / 2f + (spreadAngle / (bulletCount - 1)) * i;
+                Vector2 dir = Quaternion.Euler(0, 0, angle) * Vector2.left;
+                FireBullet(dir);
+            }
+
+            yield return new WaitForSeconds(1.5f);
+        }
+    }
+}
+```
+
+일단 세개까지만 만들고 구현만 시켜두기로 했다.
+
