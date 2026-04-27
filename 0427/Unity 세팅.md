@@ -66,3 +66,70 @@ Like This
 <img width="951" height="91" alt="image" src="https://github.com/user-attachments/assets/33f973a3-a833-4f33-b1f5-7db74f61c48b" />
 
 오마갓 지져쓰
+
+**Hello, World 에서의 문법 해석**
+
+설명할 줄 알아야 함.
+```
+//[1] 네임 스페이스 선언부
+using UnityEngine; // 현재 cs 파일에서 UnityEngine 네임스페이스를 사용
+
+// [2] 클래스 선언부
+public class HelloWorld : MonoBehaviour
+{
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // [3] Start 메서드 선언, 정의 : 프로그램을 시작할때 1번만 실행
+    void Start()
+    {
+        //[5] 명령문 : 콘솔에 "Hello, Unity!" 문자열 출력
+        Debug.Log("Hello, Unity!");
+    }
+
+    // Update is called once per frame
+    // [4] Update 메서드 선언, 정의 : 프로그램 시작후에 매 프레임마다 실행
+    void Update()
+    {
+        
+    }
+}
+```
+만약, 네임스페이스를 사용하지않는다면...
+<img width="711" height="309" alt="image" src="https://github.com/user-attachments/assets/228debcb-dd0d-4e0e-9c8b-7bf1ccf5f923" />
+
+사진과 같이 매번 UnityEngine. 을 앞부분에 작성해 줘야한다. 7ㅐ불편한거 ㅇㅈ?
+
+### 과제 등장
+
+Q. 콘솔창에 아래 내용을 출력하라.
+
+Hello, Game
+123456789
+
+### 개 쉬 움.
+
+두가지 방법이 있다.
+
+코드 안에
+
+ Debug.Log("Hello, Game");
+ Debug.Log("123456789");
+
+ 이렇게 쓰는 것이 있고,
+
+ Debug.Log("Hello, Game\n123456789");
+
+ 이렇게 쓰는 것이 있는데
+
+ 차이점은, 처음 건
+ <img width="236" height="75" alt="image" src="https://github.com/user-attachments/assets/89b75ff1-d3ee-4dbd-a9d4-d03eb3ec17a5" />
+
+이렇게 두개의 콘솔 명령어로 표현이 되고,
+
+다음 건
+<img width="227" height="33" alt="image" src="https://github.com/user-attachments/assets/06d2fb21-63c2-4a98-98f0-1340d1cf983e" />
+
+한 콘솔내에서 줄바꿈을 하여, 둘 다 표현이 가능하다.
+
+아무튼 혹시 몰라서 둘다 넣어뒀다ㅋ 난 똑똑해
+
+과제까지 마무리했고, 오늘의 Unity 학습은 여기까지다.
