@@ -29,3 +29,40 @@ color 를 들어간 뒤,
 그리고 preferences 온김에 이것도 확인해야한다.
 <img width="690" height="576" alt="image" src="https://github.com/user-attachments/assets/b7d6a74d-acf0-4131-a148-d0dc7290a61f" />
 visual studio 연결이 되어있는가? 를 확인해야한다.
+
+그리고 늘 마지막엔 Hello,World 를 찍어야 마무리가 되었다고 할 수 있다ㅎㅎ
+
+Assets폴더 안에 Scripts 폴더를 만들자.
+
+그리고 이제 c# 파일이 많아질것이기 때문에, 폴더링을 귀찮더라도 꼭 하자.
+
+Scripts 파일 안에 Hello,Unity 파일을 만들고
+
+그안에 C# 파일을 만들자. C# 파일의 이름은 Hello,World 로 정했다.
+
+만드는 방법은 이것이다.
+<img width="581" height="785" alt="image" src="https://github.com/user-attachments/assets/cb011f54-bd64-45a4-9d39-4d3ff29b3134" />
+
+만들었다면, 파일을 더블클릭하여, C#파일을 켜보자.
+
+<img width="247" height="69" alt="image" src="https://github.com/user-attachments/assets/3091c19e-9eff-454a-ba88-1846578a3a8c" />
+Start 에다가
+
+Debug.Log("Hello, World");
+
+를 쳐넣자. Debug.Log 는 Unity 에서 시작 시, 콘솔에서 뜨게끔 하는 것이다.
+
+그 후, 저장한 뒤, 플레이 해보면....
+
+어라? 아마 콘솔에서 안나올 것이다.
+
+왜냐하면, 그 C# 명령을 적용시키기 위해서는, 스크립트가 게임내 오브젝트에 적용이 되어 있어야만 하기 때문이다.
+
+고로, cube를 하나 만들고, 거기에 스크립트를 적용시켜 보자.
+
+그럼 아마 될거임ㅋ
+
+Like This
+<img width="951" height="91" alt="image" src="https://github.com/user-attachments/assets/33f973a3-a833-4f33-b1f5-7db74f61c48b" />
+
+오마갓 지져쓰
